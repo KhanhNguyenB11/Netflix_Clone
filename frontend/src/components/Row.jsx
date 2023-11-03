@@ -22,11 +22,11 @@ function Row({ title, fetchURL, rowID}) {
   }, [fetchURL]);
   function slideLeft(){
     const slider = document.getElementById("slider" + rowID);
-    slider.scrollLeft = slider.scrollLeft - 500;
+    slider.scrollLeft = slider.scrollLeft - 600;
   }
   function slideRight(){
     let slider = document.getElementById("slider" + rowID);
-    slider.scrollLeft = slider.scrollLeft + 500;
+    slider.scrollLeft = slider.scrollLeft + 600;
   }
 
   return (

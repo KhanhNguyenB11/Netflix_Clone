@@ -6,9 +6,8 @@ function SignUp() {
         <img
           src="N_logo.svg"
           className="absolute w-[200px] h-[100px] top-0 left-4 z-[100] hover:cursor-pointer"
-          ></img>
-
-          </Link>
+        ></img>
+      </Link>
       <div className="w-full h-screen">
         <img
           src="login_background.jpg"
@@ -31,10 +30,17 @@ function SignUp() {
                   type="password"
                   placeholder="Password"
                 />
-                
+
                 <button className="bg-red-600 py-3 my-6 rounded font-bold">
                   SignUp
                 </button>
+                <div className="flex justify-between text-gray-500 ">
+                  <p>
+                    <input type="checkbox" className="mr-2"/>
+                    Remember me
+                  </p>
+                  <p>Need help?</p>
+                </div>
               </form>
             </div>
           </div>
