@@ -4,11 +4,8 @@ import { Link,useNavigate } from "react-router-dom";
 function Movie({ movie }) {
   const [like, setLike] = useState(false);
   const navigate = useNavigate();
-  function handleMovieClick(){
-    navigate("/watch",{ state: { key: "value" } })
-  }
   return (
-    <Link to={`/watch/WSY7G8R6rh4`}>
+    <Link to={`/watch/eNvUS-6PTbs`}>
       <div className="w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2">
         <img
           className="w-full h-auto block"

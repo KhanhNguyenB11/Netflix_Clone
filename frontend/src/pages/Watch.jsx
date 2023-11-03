@@ -1,10 +1,15 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 function Watch({ embedId }) {
   let { id } = useParams();
+  const navigate = useNavigate();
   console.log(id);
+  function handleGoBack(){
+    navigate(-1);
+  }
   return (
-    <div className="h-0 overflow-hidden pb-[56%] relative">
+    <>
+    <div className="h-0 overflow-hidden pb-[49.5%] relative">
       <iframe
         className="h-full w-full left-0 top-0 absolute"
         width="853"
@@ -14,9 +19,8 @@ function Watch({ embedId }) {
         allowFullScreen
         title="Embedded youtube"
       />
-     
-
     </div>
+    </>
   );
 }
 
