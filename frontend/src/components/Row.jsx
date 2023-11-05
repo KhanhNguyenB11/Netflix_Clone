@@ -10,7 +10,7 @@ function Row({ title, fetchURL, rowID}) {
       axios
         .get(fetchURL)
         .then((Response) => {
-          setMovies(Response.data.results);
+          setMovies(Response.data);
         })
         .catch((error) => {
           console.log(error);

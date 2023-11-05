@@ -12,20 +12,22 @@ function Main() {
   }
   useEffect(() => {
     if (!ignore.current) {
-      axios
-        .get(request.requestPopular)
-        .then((Response) => {
-          setMovies(Response.data.results);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      async function getdata() {
+        try {
+          const res = await axios.get(request.requestPopular);
+          console.log("testlog: ", res.data); // Logging the response data
+          setMovies(res.data);
+        } catch (error) {
+          console.error("Error occurred: ", error);
+        }
+      }
+      getdata();
       return () => {
         ignore.current = true;
       };
     }
   }, []);
-  console.log(movies);
+  console.log("cheking movies state:",movies);
 
   return (
     <div className="w-full h-[550px] text-white">
