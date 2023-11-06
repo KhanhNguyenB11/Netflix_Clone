@@ -3,12 +3,14 @@ import { Routes,Route } from 'react-router-dom'
 import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Watch from './pages/Watch.jsx'
+import Admin from './pages/Admin.jsx'
 function App() {
   return (
     <div>
-      
+
       <Routes>
         <Route path="/" element={<Home/>}></Route>
+        <Route path="/admin" element={<Admin/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/signup" element={<SignUp/>}></Route>
         <Route path='/watch/:id' element={<Watch />}></Route>

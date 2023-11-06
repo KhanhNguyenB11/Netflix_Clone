@@ -9,10 +9,10 @@ function Navbar() {
           ></img>
       </Link>
       <div>
-        <Link to="/login">
+        <Link to="/signup">
           <button className="text-white pr-4 border border-transparent hover:border-white p-2 mr-2 transition-all duration-300">Sign Up</button>
         </Link>
-        <Link to="signup">
+        <Link to="/login">
           <button className="bg-red-600 px-6 py-2 rounded cursor-pointer">
            Login
           </button>

@@ -9,8 +9,9 @@ function Home() {
       <Main />
       {/* <Row title="Upcoming" rowID="1" fetchURL={request.requestUpcoming}/> */}
       <Row title="Poppular"  rowID="2" fetchURL={request.requestPopular}/>
-      {/* <Row title="Top Rated" rowID="3" fetchURL={request.requestTopRated}/>
-      <Row title="Trending" rowID="4" fetchURL={request.requestTrending}/> */}
+      <Row title="Top Rated" rowID="3" fetchURL={request.requestTopRated}/>
+      <Row title="Horror" rowID="4" fetchURL={request.requestHorror}/>
+      {/* <Row title="Trending" rowID="4" fetchURL={request.requestTrending}/> */}
     </div>
   );
 }

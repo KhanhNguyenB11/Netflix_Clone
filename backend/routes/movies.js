@@ -51,7 +51,6 @@ router.get("/genre/:genre", async (req, res) => {
     const genreMovies = await Movie.find({
       genre_ids: { $in: Number(genre.id)},
     }).limit(12);
-    console.log(genreMovies);
     res.status(200).json(genreMovies);
   } catch (error) {
     console.log(error);

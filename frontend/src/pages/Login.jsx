@@ -1,5 +1,15 @@
 import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/authcontext/AuthContext";
+import { login } from "../context/authcontext/apiCalls";
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const {isFetching,dispatch} = useContext(AuthContext);
+  function handleLogin(e) {
+    e.preventDefault();
+    login({email,password},dispatch);
+  }
   return (
     <>
       <Link to="/">
@@ -24,19 +34,29 @@ function Login() {
                   className="p-3 my-2 bg-gray-700 rounded"
                   type="email"
                   placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                   className="p-3 my-2 bg-gray-700 rounded"
                   type="password"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <button className="bg-red-600 py-3 my-6 rounded font-bold">
-                  SignUp
+                <button
+                  className="bg-red-600 py-3 my-6 rounded font-bold"
+                  onClick={(e) => {
+                    handleLogin(e);
+                  }}
+                  
+                >
+                  Login
                 </button>
                 <div className="flex justify-between text-gray-500 ">
                   <p>
-                    <input type="checkbox" className="mr-2"/>
+                    <input type="checkbox" className="mr-2" />
                     Remember me
                   </p>
                   <p>Need help?</p>
@@ -49,6 +69,5 @@ function Login() {
     </>
   );
 }
-
 
 export default Login;
