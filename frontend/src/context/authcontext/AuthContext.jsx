@@ -1,4 +1,3 @@
-import { json } from "react-router-dom";
 import AuthReducer from "./authReducer";
 import {createContext, useEffect, useReducer} from "react";
 const init_state = {
