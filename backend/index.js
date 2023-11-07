@@ -5,7 +5,6 @@ const auth = require('./routes/auth');
 const users = require('./routes/users');
 const movies = require('./routes/movies');
 const genre = require('./routes/genres');
-const list = require('./routes/lists');
 const PORT = process.env.PORT;
 const app = express();
 const cors = require('cors')
@@ -13,7 +12,6 @@ app.use(express.json());
 app.use(cors("*"));
 app.use('/auth',auth);
 app.use('/users',users);
-app.use('/lists',list);
 app.use('/movies',movies);
 app.use('/genres',genre);
 mongoose

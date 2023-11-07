@@ -15,7 +15,6 @@ function Main() {
       async function getdata() {
         try {
           const res = await axios.get(request.requestPopular);
-          console.log("testlog: ", res.data); // Logging the response data
           setMovies(res.data);
         } catch (error) {
           console.error("Error occurred: ", error);
@@ -27,7 +26,6 @@ function Main() {
       };
     }
   }, []);
-  console.log("cheking movies state:",movies);
 
   return (
     <div className="w-full h-[550px] text-white">

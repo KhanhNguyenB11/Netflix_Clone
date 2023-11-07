@@ -7,7 +7,6 @@ import { useContext } from "react";
 import { AuthContext } from "../context/authcontext/AuthContext.jsx";
 function Home() {
   const { user } = useContext(AuthContext);
-  console.log(user);
   return (
     <div>
       {user ? <UserNavbar /> : <Navbar />}

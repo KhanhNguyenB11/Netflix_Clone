@@ -6,8 +6,10 @@ import Watch from './pages/Watch.jsx'
 import Admin from './pages/Admin.jsx'
 import { useContext } from 'react'
 import { AuthContext } from './context/authcontext/AuthContext.jsx'
+import  MovieList  from './pages/MovieList.jsx'
 function App() {
   const {user} = useContext(AuthContext);
+  console.log(user);
   return (
     <div>
 
@@ -17,6 +19,7 @@ function App() {
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/signup" element={<SignUp/>}></Route>
         <Route path='/watch/:id' element={<Watch />}></Route>
+        <Route path={user&&`/${user.username}/list`} element={<MovieList/>}></Route>
       </Routes>
     </div>
   )

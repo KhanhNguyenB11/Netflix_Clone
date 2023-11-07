@@ -36,7 +36,8 @@ const UserNavbar = () => {
             <span className="navbarmainLinks hidden md:block">Movies</span>
           </Link>
           <span>New and Popular</span>
-          <span>My List</span>
+          <Link to={`/${user.username}/list`}><span>My List</span></Link>
+          
         </div>
         <div className="gap-4 flex items-center mr-[50px]">
           <p className=" lg:text-xl md:text-lg sm:text-md">{user.username}</p>
