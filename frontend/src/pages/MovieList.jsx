@@ -25,7 +25,6 @@ function MovieList() {
   },[]);
   return (
     <>
-    <UserNavbar />
     <div className="text-white">
       <h1 className="text-white xl:text-3xl py-5 mt-10">My Lists</h1>
       <div className="grid grid-cols-3 gap-4 px-32">

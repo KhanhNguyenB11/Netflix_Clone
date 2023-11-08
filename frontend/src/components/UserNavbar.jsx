@@ -13,35 +13,34 @@ const UserNavbar = () => {
 
   return (
     <div
-      className={`navbar ${
+      className={`${
         isScrolled
           ? "bg-main-color opacity-0 transition-all duration-300"
           : "bg-gradient-to-t from-transparent to-black via-main-color"
-      } w-full text-white text-sm fixed top-0 z-50`}
+      } w-full text-white text-sm fixed z-50`}
     >
-      <div className="container px-4 mx-auto flex items-center justify-between h-16">
-        <div className="gap-4 flex items-center">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
-            alt=""
-            className="h-6 mr-10 hidden md:block"
-          />
+      <div className=" px-4 mx-auto flex items-center justify-between h-16 absolute w-[100vw]">
+        <div className="gap-4 flex items-center ">
           <Link to="/" className="link">
-            <span>Homepage</span>
+            <img
+              src="N_logo.svg"
+              alt="Netflix_logo"
+              className=" w-[200px] h-[100px] z-[100] hover:cursor-pointer"
+            />
           </Link>
           <Link to="/series" className="link">
-            <span className="navbarmainLinks hidden md:block">Series</span>
+            <span className="navbarmainLinks hidden md:block lg:text-2xl md:text-lg sm:text-md">Series</span>
           </Link>
           <Link to="/movies" className="link">
-            <span className="navbarmainLinks hidden md:block">Movies</span>
+            <span className="navbarmainLinks hidden md:block lg:text-2xl md:text-lg sm:text-md">Movies</span>
           </Link>
-          <span>New and Popular</span>
+          <span className="lg:text-2xl md:text-lg sm:text-md">New and Popular</span>
           <Link to={`/${user.username}/list`}>
-            <span>My List</span>
+            <span className="lg:text-2xl md:text-lg sm:text-md">My List</span>
           </Link>
         </div>
         <div className="gap-4 flex items-center mr-[50px]">
-          <p className=" lg:text-xl md:text-lg sm:text-md">{user.username}</p>
+          <p className=" lg:text-2xl md:text-lg sm:text-md">{user.username}</p>
           <div className="group relative">
             <svg
               xmlns="http://www.w3.org/2000/svg"

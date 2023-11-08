@@ -22,15 +22,21 @@ function ListCard({ list }) {
     // day > 1
     else if (Math.floor(timeDifference / (1000 * 60 * 60 * 24)) > 0)
       return [Math.floor(timeDifference / (1000 * 60 * 60 * 24)), "days"];
+    // Hour > 1
+    else if (Math.floor(timeDifference / (1000 * 60 * 60)) > 0)
+      return [Math.floor(timeDifference / (1000 * 60 * 60)), "hours"];
+    // Minute > 1
+    else if (Math.floor(timeDifference / (1000 * 60)) > 0)
+      return [Math.floor(timeDifference / (1000 * 60)), "minutes"];
     return [timeDifference, "seconds"];
   }
   const [time, unit] = formatLastUpdatedTime(list.updatedAt);
+  console.log(list);
   return (
-    <div className="border rounded bg-slate-500 flex justify-center items-center h-[400px] flex-col">
-      {/* <Link to={{pathname:`/${user.username}/list/${list.name}`,state: {arguments: list.movies}}} >
-        
-      </Link> */}
-      <Link to={`/${user.username}/list/${list.name}`} state= {list.movies}>
+    <div
+      className={`border rounded bg-slate-500 flex justify-center items-center h-[400px] flex-col bg-gradient-to-r from-cyan-500 to-blue-500`}
+    >
+      <Link to={`/${user.username}/list/${list.name}`} state={list}>
         <h2 className=" font-bold text-3xl">{list.name}</h2>{" "}
       </Link>
       <p>{list.movies.length} items</p>
