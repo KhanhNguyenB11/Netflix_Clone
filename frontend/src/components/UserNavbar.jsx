@@ -15,7 +15,7 @@ const UserNavbar = () => {
     <div
       className={`navbar ${
         isScrolled
-          ? "bg-main-color"
+          ? "bg-main-color opacity-0 transition-all duration-300"
           : "bg-gradient-to-t from-transparent to-black via-main-color"
       } w-full text-white text-sm fixed top-0 z-50`}
     >
@@ -36,8 +36,9 @@ const UserNavbar = () => {
             <span className="navbarmainLinks hidden md:block">Movies</span>
           </Link>
           <span>New and Popular</span>
-          <Link to={`/${user.username}/list`}><span>My List</span></Link>
-          
+          <Link to={`/${user.username}/list`}>
+            <span>My List</span>
+          </Link>
         </div>
         <div className="gap-4 flex items-center mr-[50px]">
           <p className=" lg:text-xl md:text-lg sm:text-md">{user.username}</p>
@@ -60,17 +61,16 @@ const UserNavbar = () => {
               <span className="p-2 cursor-pointer">Settings</span>
               <span
                 className="p-2 cursor-pointer"
-                onClick={() => dispatch(logout())}
+                onClick={() => {
+                  dispatch(logout());
+                  window.location.href = "/";
+                }}
               >
                 Logout
               </span>
               {user.isAdmin ? (
                 <Link to="/admin">
-                  <span
-                    className="p-2 cursor-pointer"
-                  >
-                    Admin 
-                  </span>
+                  <span className="p-2 cursor-pointer">Admin</span>
                 </Link>
               ) : (
                 ""

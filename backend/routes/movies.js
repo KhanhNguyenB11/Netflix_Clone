@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Movie = require("../models/Movie");
 const verify = require("../verifyToken");
 const Genre = require("../models/Genre");
+const { json } = require("express");
 router.post("/", verify, async (req, res) => {
   if (req.user.isAdmin) {
     const newMovie = new Movie(req.body);
@@ -13,6 +14,7 @@ router.post("/", verify, async (req, res) => {
     }
   }
 });
+
 router.put("/:id", verify, async (req, res) => {
   if (req.user.isAdmin) {
     try {
@@ -49,7 +51,7 @@ router.get("/genre/:genre", async (req, res) => {
   try {
     const genre = await Genre.findOne({ name: req.params.genre });
     const genreMovies = await Movie.find({
-      genre_ids: { $in: Number(genre.id)},
+      genre_ids: { $in: Number(genre.id) },
     }).limit(12);
     res.status(200).json(genreMovies);
   } catch (error) {
@@ -68,11 +70,30 @@ router.delete("/:id", verify, async (req, res) => {
     }
   }
 });
+router.post("/getlist", async (req, res) => {
+  try {
+    let movie;
+    const { ids } = req.body;
+    if (ids) {
+      movie = await Promise.all(
+        ids.map(async (id) => {
+          return await Movie.findOne({ id: id });
+        })
+      );
+      res.status(200).json(movie);
+      console.log(movie);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
 router.get("/:id", verify, async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
     res.status(200).json(movie);
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 });
