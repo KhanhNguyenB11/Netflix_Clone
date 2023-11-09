@@ -23,7 +23,7 @@ function ListDetail() {
   return (
     <div className="mt-5">
       <h1 className="text-white text-2xl p-4">List Details</h1>
-      <div className="text-white grid grid-cols-5 px-32 gap-4">
+      <div className="text-white grid grid-cols-4 px-32 gap-4">
         {movies.map((movie) => (
           <Movie movie={movie} key={movie?.id} displayType="Poster" list={list}/>
         ))}

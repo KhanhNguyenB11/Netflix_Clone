@@ -2,7 +2,6 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authcontext/AuthContext";
 import { API_URL } from "../Request";
-import UserNavbar from "../components/UserNavbar";
 import ListCard from "../components/ListCard";
 function MovieList() {
   const { user } = useContext(AuthContext);
