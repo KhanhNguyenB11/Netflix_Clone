@@ -10,7 +10,6 @@ import MovieList from "./pages/MovieList.jsx";
 import ListDetail from "./pages/ListDetail.jsx";
 function App() {
   const { user } = useContext(AuthContext);
-  console.log(user);
   return (
     <div>
       <Routes>

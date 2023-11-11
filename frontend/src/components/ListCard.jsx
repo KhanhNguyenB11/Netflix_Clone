@@ -31,7 +31,6 @@ function ListCard({ list }) {
     return [timeDifference, "seconds"];
   }
   const [time, unit] = formatLastUpdatedTime(list.updatedAt);
-  console.log(list);
   return (
     <div
       className={`border rounded bg-slate-500 flex justify-center items-center h-[400px] flex-col bg-gradient-to-r from-cyan-500 to-blue-500`}
@@ -40,6 +39,7 @@ function ListCard({ list }) {
         <h2 className=" font-bold text-3xl">{list.name}</h2>{" "}
       </Link>
       <p>{list.movies.length} items</p>
+      <p>{list.description}</p>
       <p>Last update: {`${time} ${unit} ago`}</p>
     </div>
   );

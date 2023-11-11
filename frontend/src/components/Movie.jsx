@@ -117,6 +117,8 @@ function Movie({ movie, displayType = "default", list }) {
           contentLabel="Example Modal"
           style={customStyles}
         >
+          {/* modal add movies to list */}
+          {displayType=="default"?(<div>
           <h2 className="text-2xl font-bold p-3">
             Add <span className=" text-red-600">{movie?.title}</span> to list
           </h2>
@@ -150,9 +152,19 @@ function Movie({ movie, displayType = "default", list }) {
               </button>
             </div>
           </div>
-          <button onClick={closeModal} className="absolute top-0 right-4">
+          <button onClick={closeModal} className="absolute top-0 right-3 py-2 font-bold text-red-600">
             X
           </button>
+          </div>):(
+            <div>
+              <h2 className="py-2">Delete <span className="text-red-600">{movie.title}</span> from your list ?</h2>
+              <div className="flex justify-between">
+              <button className="bg-red-600 rounded font-bold p-3 hover:bg-red-700 text-white w-[70px]" onClick={handleRemove}>Yes</button>
+              <button className="bg-blue-600 rounded font-bold p-3 hover:bg-blue-700 text-white w-[70px]" onClick={closeModal}>NO</button>
+              </div>
+            </div>
+          )}
+          
         </Modal>
         <div className="absolute top-0 left-0 w-full h-full hover:bg-black/40 opacity-0 hover:opacity-100">
           <Link to={`/watch/eNvUS-6PTbs`}>
@@ -167,7 +179,7 @@ function Movie({ movie, displayType = "default", list }) {
             {displayType !== "default" ? (
               <AiOutlineDelete
                 className="absolute top-4 right-4 text-gray-300"
-                onClick={handleRemove}
+                onClick={openModal}
               ></AiOutlineDelete>
             ) : (
               <BsPlus
