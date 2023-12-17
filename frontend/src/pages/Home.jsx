@@ -14,8 +14,8 @@ function Home() {
       {/* <Row title="Upcoming" rowID="1" fetchURL={request.requestUpcoming}/> */}
       <Row title="Poppular" rowID="2" fetchURL={request.requestPopular} />
       <Row title="Top Rated" rowID="3" fetchURL={request.requestTopRated} />
-      <Row title="Horror" rowID="4" fetchURL={request.requestHorror} />
-      {/* <Row title="Trending" rowID="4" fetchURL={request.requestTrending}/> */}
+      <Row title="Horror" rowID="4" fetchURL={`${request.requestGenre}horror`} />
+      <Row title="Action" rowID="5" fetchURL={`${request.requestGenre}action`}/>
     </div>
   );
 }

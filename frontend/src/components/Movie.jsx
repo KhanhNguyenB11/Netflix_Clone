@@ -145,7 +145,7 @@ function Movie({ movie, displayType = "default", list }) {
                   : ""}
               </select>
               <button
-                className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white hover:"
+                className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white hover:bg-red-700"
                 onClick={handleAddToList}
               >
                 Add

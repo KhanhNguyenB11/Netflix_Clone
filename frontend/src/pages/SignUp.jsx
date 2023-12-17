@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 function SignUp() {
+  const [email,setEmail] = useState();
+
   return (
     <>
       <Link to="/">
@@ -8,43 +11,26 @@ function SignUp() {
           className="absolute w-[200px] h-[100px] top-0 left-4 z-[100] hover:cursor-pointer"
         ></img>
       </Link>
-      <div className="w-full h-screen">
-        <img
-          src="login_background.jpg"
+      <div className="flex justify-center items-center w-full h-screen">
+        <img src="login_background.jpg"
           alt="background_img"
-          className="object-cover w-full h-full absolute"
-        />
-        <div className="bg-black/60 fixed top-0 left-0 w-full h-screen"></div>
-        <div className="fixed w-full px-4 py-24 z-50">
-          <div className="max-w-[450px] h-[600px] mx-auto bg-black/75 text-white">
-            <div className="max-w-[320px] mx-auto py-16">
-              <h1 className="text-3xl font-bold">SignUp</h1>
-              <form action="" className="w-full flex flex-col py-4">
-                <input
-                  className="p-3 my-2 bg-gray-700 rounded"
-                  type="email"
-                  placeholder="Email"
-                />
-                <input
-                  className="p-3 my-2 bg-gray-700 rounded"
-                  type="password"
-                  placeholder="Password"
-                />
-
-                <button className="bg-red-600 py-3 my-6 rounded font-bold">
-                  SignUp
-                </button>
-                <div className="flex justify-between text-gray-500 ">
-                  <p>
-                    <input type="checkbox" className="mr-2"/>
-                    Remember me
-                  </p>
-                  <p>Need help?</p>
-                </div>
-              </form>
-            </div>
+          className="object-cover w-full h-full absolute"/>
+          <div className="bg-black/60 fixed top-0 left-0 w-full h-screen"></div>
+          <div className="z-50 ">
+          <div className=" text-center">
+            <h1 className="text-white font-bold text-[3rem]">Unlimited movies, TV shows, and more</h1>
+            <p className="text-white text-[1.5rem]">Watch anywhere. Cancel anytime.</p>
+            <p className="text-white text-[1.5rem]">Ready to watch? Enter your email to create or restart your membership.</p>
           </div>
-        </div>
+          <div className="flex justify-between items-center text-white">
+            <div className=" rounded grow mr-3 my-3 border text-white border-white bg-gray-900/75">
+            <input type="email" name="" id="" placeholder="Email address" className="py-5 px-4 w-full h-full bg-transparent"/>  
+            </div>
+          
+          <button className="bg-red-600 py-5 rounded font-bold hover:bg-red-700 transition-all duration-300 px-5">Get Started</button>
+
+          </div>
+          </div>
       </div>
     </>
   );

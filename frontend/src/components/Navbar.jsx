@@ -8,12 +8,12 @@ function Navbar() {
           className="absolute w-[200px] h-[100px] top-0 left-4 z-[100] hover:cursor-pointer"
           ></img>
       </Link>
-      <div>
+      <div className="text-white">
         <Link to="/signup">
-          <button className="text-white pr-4 border border-transparent hover:border-white p-2 mr-2 transition-all duration-300">Sign Up</button>
+          <button className=" pr-4 border border-transparent hover:border-white p-2 mr-2 transition-all duration-300">Sign Up</button>
         </Link>
         <Link to="/login">
-          <button className="bg-red-600 px-6 py-2 rounded cursor-pointer">
+          <button className="bg-red-600 px-6 py-2 rounded cursor-pointer hover:bg-red-700 transition-all duration-300">
            Login
           </button>
         </Link>

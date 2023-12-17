@@ -46,7 +46,7 @@ function Login() {
                 />
 
                 <button
-                  className="bg-red-600 py-3 my-6 rounded font-bold"
+                  className="bg-red-600 py-3 my-6 rounded font-bold hover:bg-red-700 transition-all duration-300"
                   onClick={(e) => {
                     handleLogin(e);
                   }}

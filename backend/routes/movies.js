@@ -39,6 +39,15 @@ router.get("/popular", async (req, res) => {
     res.status(500).json(error);
   }
 });
+router.get("/newest/", async (req, res) => {
+  const page = req.query.page || 1;
+  try {
+    const popularMovie = await Movie.find().sort({ release_date: -1 }).skip((page - 1) * 12).limit(12);
+    res.status(200).json(popularMovie);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 router.get("/top_rated", async (req, res) => {
   try {
     const popularMovie = await Movie.find().sort({ vote_average: 1 }).limit(12);
@@ -49,7 +58,7 @@ router.get("/top_rated", async (req, res) => {
 });
 router.get("/genre/:genre", async (req, res) => {
   try {
-    const genre = await Genre.findOne({ name: req.params.genre });
+    const genre = await Genre.findOne({ name: new RegExp(req.params.genre, 'i') });
     const genreMovies = await Movie.find({
       genre_ids: { $in: Number(genre.id) },
     }).limit(12);
