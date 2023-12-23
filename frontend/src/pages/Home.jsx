@@ -8,7 +8,7 @@ import { AuthContext } from "../context/authcontext/AuthContext.jsx";
 function Home() {
   const { user } = useContext(AuthContext);
   return (
-    <div>
+    <div className="bg-black"> 
       {user ? <UserNavbar /> : <Navbar />}
       <Main />
       {/* <Row title="Upcoming" rowID="1" fetchURL={request.requestUpcoming}/> */}

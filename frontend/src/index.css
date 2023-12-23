@@ -6,9 +6,7 @@ html,
 .root {
   height: 100%;
 }
-body {
-  background-color: black;
-}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
