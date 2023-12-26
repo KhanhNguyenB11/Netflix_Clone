@@ -14,6 +14,16 @@ router.post("/", verify, async (req, res) => {
     }
   }
 });
+router.get("/",verify,async (req,res)=>{
+  if(req.user.isAdmin){
+    try {
+      const movies = await Movie.find();
+      res.status(200).json(movies.reverse());
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+})
 
 router.put("/:id", verify, async (req, res) => {
   if (req.user.isAdmin) {
@@ -73,8 +83,10 @@ router.delete("/:id", verify, async (req, res) => {
   if (req.user.isAdmin) {
     try {
       const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
+      console.log(deletedMovie);
       res.status(200).json(deletedMovie);
     } catch (error) {
+      console.log(error);
       res.status(500).json(error);
     }
   }

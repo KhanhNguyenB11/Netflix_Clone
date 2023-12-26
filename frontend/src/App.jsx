@@ -31,9 +31,9 @@ function App() {
             <Route path="users" element={<UserList />}></Route>
             <Route path="user/:userId" element={<User />}></Route>
             <Route path="newUser" element={<NewUser />}></Route>
-            <Route path="movies" element={<ProductList />}></Route>
+            <Route path="movie" element={<ProductList />}></Route>
             <Route
-              path="product/:productId"
+              path="movie/:movieId"
               element={<Product />}
             ></Route>
             <Route path="newproduct" element={<NewProduct />}></Route>

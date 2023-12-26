@@ -1,8 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import request from "../Request.js";
 import axios from "axios";
 function Main() {
-  const ignore = useRef(false);
   const [movies, setMovies] = useState("");
   const feature_movie = movies[Math.floor(Math.random() * movies.length)];
   function truncateString(str, num) {
@@ -11,21 +10,23 @@ function Main() {
     } else return str;
   }
   useEffect(() => {
-    if (!ignore.current) {
-      async function getdata() {
-        try {
-          const res = await axios.get(request.requestPopular);
-          setMovies(res.data);
-        } catch (error) {
-          console.error("Error occurred: ", error);
-        }
+    let ignore = false;
+    async function getdata() {
+      try {
+        const res = await axios.get(request.requestPopular);
+        setMovies(res.data);
+      } catch (error) {
+        console.error("Error occurred: ", error);
       }
-      getdata();
-      return () => {
-        ignore.current = true;
-      };
     }
+    if (!ignore) { 
+      getdata();
+    }
+    return () => {
+      ignore = true;
+    };
   }, []);
+  
 
   return (
     <div className="w-full h-[550px] text-white">
