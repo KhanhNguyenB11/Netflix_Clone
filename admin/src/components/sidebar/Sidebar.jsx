@@ -48,7 +48,7 @@ export default function Sidebar() {
                 Users
               </li>
             </Link>
-            <Link to="/admin/movies" className="link">
+            <Link to="/admin/movie" className="link">
               <li className="sidebarListItem">
                 <PlayCircleFilledOutlined className="sidebarIcon" />
                 Movies
