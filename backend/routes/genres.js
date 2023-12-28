@@ -13,6 +13,7 @@ router.post("/", verify, async (req, res) => {
       }
     }
   });
+
   router.put("/:id", verify, async (req, res) => {
     if (req.user.isAdmin) {
       try {
@@ -55,6 +56,16 @@ router.post("/", verify, async (req, res) => {
       res.status(500).json(error);
     }
   });
+  router.post("/find",async(req,res)=>{
+    try {
+      console.log(req.body);
+      const genre = await Genre.find({id: {$in: req.body} });
+      console.log(genre);
+      res.status(200).json(genre);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  })
 
   
   module.exports = router;

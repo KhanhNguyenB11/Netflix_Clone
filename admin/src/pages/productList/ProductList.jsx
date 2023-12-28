@@ -12,8 +12,9 @@ import { AuthContext } from "../../../../frontend/src/context/authcontext/AuthCo
 export default function ProductList() {
   const { user } = useContext(AuthContext);
   const {movies,dispatch} = useContext(MovieContext);
+  let ignore = false;
   useEffect(() => {
-    let ignore = false;
+    
     if(!ignore){
       GetMovies(dispatch,user);
     }
@@ -51,7 +52,7 @@ export default function ProductList() {
       renderCell: (params) => {
         return (
           <>
-            <Link to={"" + params.row.id}>
+            <Link to={{pathname:"" + params.row.id}} state={params.row}>
               <button className="productListEdit">Edit</button>
             </Link>
             <DeleteOutline

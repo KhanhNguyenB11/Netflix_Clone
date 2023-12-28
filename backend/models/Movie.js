@@ -11,6 +11,7 @@ const movieSchema = new mongoose.Schema(
     poster_path:  {type: String},
     release_date:  {type: String},
     title:  {type: String},
+    video: {type: String},
   },
   { timestamps: true }
 );
