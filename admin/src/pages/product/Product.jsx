@@ -1,19 +1,29 @@
 import { Link } from "react-router-dom";
 import "./product.css";
-import Chart from "../../components/chart/Chart";
-import { productData } from "../../dummyData";
 import { Publish } from "@material-ui/icons";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../../../frontend/src/Request";
 import axios from "axios";
+import storage from "../../../../frontend/src/firebase";
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 export default function Product() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const location = useLocation();
   let movie = location.state;
   const [genres, setGenres] = useState([]);
+  const [videoFile, setVideoFile] = useState("");
   const [allGenres, setAllGenres] = useState([]);
   const [selectRemoveGenres, setSelectRemoveGenres] = useState();
   const [selectAddGenres, setSelectAddGenres] = useState();
+  const [uploading, setUploading] = useState(false);
+  const navigate = useNavigate();
   let ignore = false;
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +65,85 @@ export default function Product() {
       ignore = true;
     };
   }, []);
+  async function onSubmit(d) {
+    try {
+      let updatedMovie = {
+        ...movie,
+        ...d,
+        genre_ids: movie.genre_ids,
+      };
+
+      console.log(updatedMovie);
+
+      if (videoFile.name != movie.video) {
+        await handleUpload();
+        //update video URL after upload
+        updatedMovie.video = movie.video;
+        console.log(videoFile);
+        setUploading(false);
+      }
+
+      // Move the axios request inside the try block to make sure it runs after handleUpload
+      const res = await axios.put(
+        `${API_URL}movies/${movie._id}`,
+        updatedMovie,
+        {
+          headers: {
+            token:
+              "bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
+          },
+        }
+      );
+
+      console.log(res.data);
+
+      // navigate("/admin/movie");
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function handleUpload() {
+    const storageRef = ref(storage, `movies/${videoFile.name}`);
+    console.log("file name" + videoFile.name);
+    try {
+      const snapshot = await uploadBytes(storageRef, videoFile);
+      setUploading(true);
+      const url = await getDownloadURL(snapshot.ref);
+      console.log("URL Video: " + url);
+      movie.video = url;
+    } catch (error) {
+      console.error("Error during file upload:", error);
+      // Handle the error accordingly
+    }
+  }
+
+  //  async function onSubmit(d){
+  //     let updatedMovie = {
+  //       ...movie,
+  //       ...d,
+  //       genre_ids: movie.genre_ids,
+  //     }
+  //     console.log(updatedMovie);
+  //     if(videoFile){
+  //       await handleUpload();
+  //       updatedMovie.video = videoFile;
+  //     }
+  //     axios
+  //         .put(`${API_URL}movies/${movie._id}`, updatedMovie, {
+  //           headers: {
+  //             token:
+  //               "bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
+  //           },
+  //         })
+  //         .then((res) => {
+  //           console.log(res.data);
+  //         })
+  //         .catch((err) => {
+  //           console.log(err);
+  //         });
+  //         navigate("/admin/movie");
+  //   }
 
   // Helper function to filter unique objects based on a property
   const filterUniqueObjects = (arr) => {
@@ -79,23 +168,32 @@ export default function Product() {
     console.log(movie.genre_ids);
     setGenres([...genres, addedGenre]);
     //Remove genre from allGenre
-    setAllGenres(prevGenres => {
-      const updatedGenres = prevGenres.filter(genre => genre.id !== Number(selectAddGenres));
+    setAllGenres((prevGenres) => {
+      const updatedGenres = prevGenres.filter(
+        (genre) => genre.id !== Number(selectAddGenres)
+      );
       setSelectAddGenres(updatedGenres.length > 0 ? updatedGenres[0].id : null);
       return updatedGenres;
     });
   };
 
   const handleRemoveGenre = () => {
-   movie.genre_ids = movie.genre_ids.filter(genre=>genre !== Number(selectRemoveGenres))
-   //Remove genre from current genres
-   setGenres(prevAllGenres => {
-    const updatedGenres = prevAllGenres.filter(genre => genre.id !== Number(selectRemoveGenres));
-    setSelectRemoveGenres(updatedGenres.length > 0 ? updatedGenres[0].id : null);
-    return updatedGenres;
-  })
-   console.log(movie.genre_ids)
+    movie.genre_ids = movie.genre_ids.filter(
+      (genre) => genre !== Number(selectRemoveGenres)
+    );
+    //Remove genre from current genres
+    setGenres((prevAllGenres) => {
+      const updatedGenres = prevAllGenres.filter(
+        (genre) => genre.id !== Number(selectRemoveGenres)
+      );
+      setSelectRemoveGenres(
+        updatedGenres.length > 0 ? updatedGenres[0].id : null
+      );
+      return updatedGenres;
+    });
+    console.log(movie.genre_ids);
   };
+
   return (
     <div className="product">
       <div className="productTitleContainer">
@@ -137,10 +235,15 @@ export default function Product() {
         </div>
       </div>
       <div className="productBottom">
-        <form className="productForm">
+        <form className="productForm" onSubmit={handleSubmit(onSubmit)}>
           <div className="productFormLeft">
             <label>Movie Title</label>
-            <input type="text" placeholder={movie.title} />
+            <input
+              type="text"
+              placeholder={movie.title}
+              {...register("title", { required: "Title is required" })}
+              defaultValue={movie.title}
+            />
             <label>Genre</label>
             <select
               name=""
@@ -158,7 +261,12 @@ export default function Product() {
               Remove
             </button>
             <label>Add New Genre</label>
-            <select name="" id="" value={selectAddGenres} onChange={e=> setSelectAddGenres(e.target.value)}>
+            <select
+              name=""
+              id=""
+              value={selectAddGenres}
+              onChange={(e) => setSelectAddGenres(e.target.value)}
+            >
               {allGenres.map((genre) => (
                 <option key={genre.id} value={genre.id}>
                   {genre.name}
@@ -169,7 +277,14 @@ export default function Product() {
               Add Genre
             </button>
             <label>Release Date</label>
-            <input type="text" placeholder={movie.release_date} />
+            <input
+              type="text"
+              placeholder={movie.release_date}
+              {...register("release_date", {
+                required: "release_date is required",
+              })}
+              defaultValue={movie.release_date}
+            />
             <label>Movie Overview</label>
             <textarea
               name=""
@@ -177,9 +292,14 @@ export default function Product() {
               cols="30"
               rows="10"
               placeholder={movie.overview}
+              defaultValue={movie.overview}
+              {...register("overview", { required: "overview is required" })}
             ></textarea>
             <label>Video</label>
-            <input type="file" />
+            <input
+              type="file"
+              onChange={(e) => setVideoFile(e.target.files[0])}
+            />
           </div>
           <div className="productFormRight">
             <div className="productUpload">
@@ -193,7 +313,13 @@ export default function Product() {
               </label>
               <input type="file" id="file" style={{ display: "none" }} />
             </div>
-            <button className="productButton">Update</button>
+            {uploading ? (
+              <button className="productButton" disabled>
+                Uploading
+              </button>
+            ) : (
+              <button className="productButton">Update</button>
+            )}
           </div>
         </form>
       </div>

@@ -67,6 +67,7 @@ export default function ProductList() {
 
   return (
     <div className="productList">
+      <Link to="/admin/newmovie" >Create New Movie</Link>
          <DataGrid
         rows={movies}
         disableSelectionOnClick
@@ -75,6 +76,7 @@ export default function ProductList() {
         checkboxSelection
         getRowId={(r) => r._id}
       />
+      
     </div>
   );
 }

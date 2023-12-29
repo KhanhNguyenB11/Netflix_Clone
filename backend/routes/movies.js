@@ -25,6 +25,7 @@ router.get("/",verify,async (req,res)=>{
   }
 })
 
+//update movie based on id
 router.put("/:id", verify, async (req, res) => {
   if (req.user.isAdmin) {
     try {

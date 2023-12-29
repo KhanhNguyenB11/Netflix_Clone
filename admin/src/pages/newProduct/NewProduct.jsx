@@ -3,13 +3,15 @@ import { useState, useEffect } from "react";
 import axios, { all } from "axios";
 import { API_URL } from "../../Request";
 import storage from "../../../../frontend/src/firebase";
-import { uploadBytes , ref } from "firebase/storage";
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 export default function NewProduct() {
+  //URL of videoFile
   const [movie, setMovie] = useState();
   const [selectRemoveGenres, setSelectRemoveGenres] = useState();
   const [selectAddGenres, setSelectAddGenres] = useState();
   const [genres, setGenres] = useState([]);
   const [allGenres, setAllGenres] = useState([]);
+  //state to manage file
   const [video, setVideo] = useState();
   const [uploaded, setUploaded] = useState(false);
   const [title, setTitle] = useState();
@@ -52,6 +54,43 @@ export default function NewProduct() {
       return updatedGenres;
     });
   };
+  //function to validate state data
+  function validateData() {
+    if (!title.trim() || !overview.trim() || !release_date.trim()) {
+      // Validation failed
+      alert("Please fill in all fields");
+      return false;
+    }
+
+    // Validation passed
+    return true;
+  }
+  function handleCreate(e) {
+    e.preventDefault();
+    //check if data is valid
+    if (validateData()) {
+      const newMovie = {
+        title,
+        overview,
+        release_date,
+        genres,
+        video: movie,
+      };
+      axios
+        .post(`${API_URL}movies/`, newMovie, {
+          headers: {
+            token:
+              "bearer " + JSON.parse(localStorage.getItem("user")).accessToken,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
 
   const handleRemoveGenre = () => {
     //Remove genre from current genres
@@ -69,38 +108,17 @@ export default function NewProduct() {
       return updatedGenres;
     });
   };
-  // function handleUpload(e) {
-  //   e.preventDefault();
-  //   const storageRef = ref(storage, `movies/${video.name}`);
-  //   const uploadTask = storageRef(video);
-  //   uploadTask.on(
-  //     "state_changes",
-  //     (snapshot) => {
-  //       const progress =
-  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-  //       console.log("Upload %: " + progress);
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     },
-  //     () => {
-  //       uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-  //         setUploaded(true);
-  //         setMovie((prev) => ({ ...prev, video: url }));
-  //         console.log(url);
-  //       });
-  //     }
-  //   );
-  // }
-  function handleUpload(e){
+  function handleUpload(e) {
     e.preventDefault();
     const storageRef = ref(storage, `movies/${video.name}`);
     uploadBytes(storageRef, video).then((snapshot) => {
       setUploaded(true);
-      setMovie((prev) => ({ ...prev, video: snapshot.metadata.fullPath }));
+      getDownloadURL(snapshot.ref).then((url) => {
+        console.log(url);
+        setMovie(url);  
+      })
       console.log(snapshot.metadata.fullPath);
     });
-
   }
   return (
     <div className="newProduct">
@@ -184,7 +202,7 @@ export default function NewProduct() {
             Upload
           </button>
         ) : (
-          <button className="addProductButton">Create</button>
+          <button className="addProductButton" onClick={handleCreate}>Create</button>
         )}
       </form>
     </div>
