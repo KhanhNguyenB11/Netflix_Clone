@@ -7,6 +7,7 @@ import Modal from "react-modal";
 import Loading from "../components/Loading.jsx";
 import { Link } from "react-router-dom";
 import CreateList from "../components/CreateList.jsx";
+import Row from "../components/Row.jsx";
 Modal.setAppElement("#root");
 function MovieList() {
   const { user } = useContext(AuthContext);
@@ -46,6 +47,7 @@ function MovieList() {
       .then((res) => {
         setList(res.data);
         setLoading(false);
+        console.log(res.data)
       })
       .catch((error) => {
         console.log(error);
@@ -54,7 +56,7 @@ function MovieList() {
   }, []);
   return (
     <>
-      <div className="text-white">
+      <div className=" bg-black h-100">
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -83,7 +85,7 @@ function MovieList() {
             />
           </Link>
           <button
-            className="bg-red-600 rounded font-bold p-3 hover:bg-red-700"
+            className="bg-red-600 rounded font-bold p-3 hover:bg-red-700 text-white"
             onClick={openModal}
           >
             Create New List
@@ -94,10 +96,11 @@ function MovieList() {
             <Loading />
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4 px-32">
-            {list
+          <div className="">
+            {/* {list
               ? list.map((item) => <ListCard key={item._id} list={item} />)
-              : ""}
+              : ""} */}
+              {list.map((item) => <Row title={item.name} key={item._id} list={item}  fetchURL={`${API_URL}movies/getlist`} rowID={item._id}/>)}
           </div>
         )}
       </div>

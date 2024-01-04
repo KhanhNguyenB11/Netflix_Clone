@@ -96,6 +96,7 @@ router.post("/getlist", async (req, res) => {
   try {
     let movie;
     const { ids } = req.body;
+    console.log(ids);
     if (ids) {
       movie = await Promise.all(
         ids.map(async (id) => {

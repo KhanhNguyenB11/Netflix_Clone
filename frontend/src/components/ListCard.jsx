@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authcontext/AuthContext";
+//Usage no longer needed
 function ListCard({ list }) {
   const { user } = useContext(AuthContext);
   function formatLastUpdatedTime(date) {

@@ -1,20 +1,29 @@
-import { useRef, useEffect } from 'react';
-import Plyr from 'plyr';
+import { useRef, useEffect } from "react";
+import Plyr from "plyr";
 
 const VideoPlayer = ({ videoURL }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // Initialize Plyr when the component mounts
-    const player = new Plyr(videoRef.current, {
-      controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
-    });
+    const player = new Plyr(videoRef.current);
 
-    // Destroy Plyr when the component unmounts to avoid memory leaks
+    const handleSeeked = () => {
+      console.log(player.currentTime);
+    };
+
+    player.on("seeked", handleSeeked);
+
+    // You can adjust the interval based on your needs
+    const interval = setInterval(() => {
+      player.currentTime; // This should now give you the current time
+    }, 1000);
+
     return () => {
       if (player) {
         player.destroy();
       }
+      player.off("seeked", handleSeeked);
+      clearInterval(interval);
     };
   }, []);
 

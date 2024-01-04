@@ -28,10 +28,17 @@ router.put("/:id", verify, async (req, res) => {
     res.status(500).json(error);
   }
 });
+//delete list
 router.delete("/:id", verify, async (req, res) => {
   try {
-    const deletedList = await List.findByIdAndDelete(req.params.id);
-    res.status(200).json(deletedList);
+    const list = await List.findById(req.params.id);
+    if(list.name !== "History"){
+      const deletedList = await List.findByIdAndDelete(req.params.id);
+      res.status(200).json(deletedList);
+    }
+    else{
+      res.status(200).json("You can't delete this list");
+    }
   } catch (error) {
     res.status(500).json(error);
   }

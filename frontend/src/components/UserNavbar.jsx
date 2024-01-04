@@ -17,7 +17,7 @@ const UserNavbar = () => {
         isScrolled
           ? "bg-main-color opacity-0 transition-all duration-300"
           : "bg-gradient-to-t from-transparent to-black via-main-color"
-      } w-full text-white text-sm fixed z-50`}
+      } w-full text-white text-sm fixed z-50 mix-blend-normal`}
     >
       <div className=" px-4 mx-auto flex items-center justify-between h-16 absolute w-[100vw]">
         <div className="gap-4 flex items-center ">
@@ -39,7 +39,7 @@ const UserNavbar = () => {
             <span className="lg:text-2xl md:text-lg sm:text-md">My List</span>
           </Link>
         </div>
-        <div className="gap-4 flex items-center mr-[50px]">
+        <div className="gap-4 flex items-center mr-[50px] mix-blend-overlay">
           <p className=" lg:text-2xl md:text-lg sm:text-md">{user.username}</p>
           <div className="group relative">
             <svg

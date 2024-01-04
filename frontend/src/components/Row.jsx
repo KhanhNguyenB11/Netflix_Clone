@@ -2,29 +2,41 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import Movie from "./Movie";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-function Row({ title, fetchURL, rowID}) {
+function Row({ title, fetchURL, rowID, list }) {
   const [movies, setMovies] = useState([]);
   const ignore = useRef(false);
   useEffect(() => {
     if (!ignore.current) {
-      axios
-        .get(fetchURL)
-        .then((Response) => {
-          setMovies(Response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (list){
+        axios
+          .post(fetchURL, {ids: list.movies})
+          .then((Response) => {
+            setMovies(Response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+          console.log(list.movies);
+      } else {
+        axios
+          .get(fetchURL)
+          .then((Response) => {
+            setMovies(Response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
       return () => {
         ignore.current = true;
       };
     }
   }, [fetchURL]);
-  function slideLeft(){
+  function slideLeft() {
     const slider = document.getElementById("slider" + rowID);
     slider.scrollLeft = slider.scrollLeft - 600;
   }
-  function slideRight(){
+  function slideRight() {
     let slider = document.getElementById("slider" + rowID);
     slider.scrollLeft = slider.scrollLeft + 600;
   }
@@ -34,7 +46,7 @@ function Row({ title, fetchURL, rowID}) {
       <h2 className="text-white font-bold p-4 text-3xl">{title}</h2>
       <div className="flex relative items-center group">
         <MdChevronLeft
-        onClick={slideLeft}
+          onClick={slideLeft}
           size={40}
           className="bg-white rounded-full absolute opacity-0 left-0 cursor-pointer z-10 group-hover:opacity-100  transition-opacity duration-300 ease-in-out"
         />
@@ -44,11 +56,12 @@ function Row({ title, fetchURL, rowID}) {
           className="overflow-x-scroll w-full h-full whitespace-nowrap scroll-smooth relative scrollbar-hide"
         >
           {movies.map((movie) => (
+            list ? <Movie movie={movie} key={movie?.id} list={list} displayType="list"/> :
             <Movie movie={movie} key={movie?.id} />
           ))}
         </div>
         <MdChevronRight
-        onClick={slideRight}
+          onClick={slideRight}
           size={40}
           className="bg-white rounded-full absolute opacity-0 right-0 cursor-pointer z-10 group-hover:opacity-100  transition-opacity duration-300 ease-in"
         ></MdChevronRight>

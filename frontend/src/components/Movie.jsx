@@ -55,10 +55,9 @@ function Movie({ movie, displayType = "default", list }) {
   };
   const defaultType =
     "w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2";
-  const listType =
-    "w-[160px] sm:w-[200px] h-auto md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2";
 
   //API CALLS
+  //remove movie from list
   function handleRemove() {
     const newMovieArr = list.movies.filter((item) => item != movie.id);
     axios
@@ -101,14 +100,10 @@ function Movie({ movie, displayType = "default", list }) {
   }
   return (
     showComponent && (
-      <div className={displayType == "default" ? defaultType : listType}>
+      <div className={defaultType}>
         <img
           className="w-full h-auto block"
-          src={
-            displayType == "default"
-              ? `https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`
-              : `https://image.tmdb.org/t/p/w342/${movie?.poster_path}`
-          }
+          src={`https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}`}
           alt={movie?.title}
         />
         <Modal
@@ -118,53 +113,76 @@ function Movie({ movie, displayType = "default", list }) {
           style={customStyles}
         >
           {/* modal add movies to list */}
-          {displayType=="default"?(<div>
-          <h2 className="text-2xl font-bold p-3">
-            Add <span className=" text-red-600">{movie?.title}</span> to list
-          </h2>
-          <div>
-            <h2 className="p-2">Your list: </h2>
-            <div className="flex justify-evenly gap-4">
-              <select
-                name=""
-                id=""
-                className="p-4 flex-grow-1"
-                onChange={(e) => setSelectedList(JSON.parse(e.target.value))}
-                value={selectedlist ? JSON.stringify(selectedlist) : ""}
-              >
-                {mylist
-                  ? mylist.map((item) => {
-                      if (!item.movies.includes(movie.id)) {
-                        return (
-                          <option key={item._id} value={JSON.stringify(item)}>
-                            {item.name}
-                          </option>
-                        );
-                      }
-                    })
-                  : ""}
-              </select>
+          {displayType == "default" ? (
+            <div>
+              <h2 className="text-2xl font-bold p-3">
+                Add <span className=" text-red-600">{movie?.title}</span> to
+                list
+              </h2>
+              <div>
+                <h2 className="p-2">Your list: </h2>
+                <div className="flex justify-evenly gap-4">
+                  <select
+                    name=""
+                    id=""
+                    className="p-4 flex-grow-1"
+                    onChange={(e) =>
+                      setSelectedList(JSON.parse(e.target.value))
+                    }
+                    value={selectedlist ? JSON.stringify(selectedlist) : ""}
+                  >
+                    {mylist
+                      ? mylist.map((item) => {
+                          if (!item.movies.includes(movie.id) && item.name !== "History") {
+                            return (
+                              <option
+                                key={item._id}
+                                value={JSON.stringify(item)}
+                              >
+                                {item.name}
+                              </option>
+                            );
+                          }
+                        })
+                      : ""}
+                  </select>
+                  <button
+                    className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white hover:bg-red-700"
+                    onClick={handleAddToList}
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
               <button
-                className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white hover:bg-red-700"
-                onClick={handleAddToList}
+                onClick={closeModal}
+                className="absolute top-0 right-3 py-2 font-bold text-red-600"
               >
-                Add
+                X
               </button>
             </div>
-          </div>
-          <button onClick={closeModal} className="absolute top-0 right-3 py-2 font-bold text-red-600">
-            X
-          </button>
-          </div>):(
+          ) : (
             <div>
-              <h2 className="py-2">Delete <span className="text-red-600">{movie.title}</span> from your list ?</h2>
+              <h2 className="py-2">
+                Delete <span className="text-red-600">{movie.title}</span> from
+                your list ?
+              </h2>
               <div className="flex justify-between">
-              <button className="bg-red-600 rounded font-bold p-3 hover:bg-red-700 text-white w-[70px]" onClick={handleRemove}>Yes</button>
-              <button className="bg-blue-600 rounded font-bold p-3 hover:bg-blue-700 text-white w-[70px]" onClick={closeModal}>NO</button>
+                <button
+                  className="bg-red-600 rounded font-bold p-3 hover:bg-red-700 text-white w-[70px]"
+                  onClick={handleRemove}
+                >
+                  Yes
+                </button>
+                <button
+                  className="bg-blue-600 rounded font-bold p-3 hover:bg-blue-700 text-white w-[70px]"
+                  onClick={closeModal}
+                >
+                  NO
+                </button>
               </div>
             </div>
           )}
-          
         </Modal>
         <div className="absolute top-0 left-0 w-full h-full hover:bg-black/40 opacity-0 hover:opacity-100">
           <Link to={`/watch/${movie.title}`} state={movie?.video}>
