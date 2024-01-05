@@ -1,3 +1,4 @@
+const History = require("../models/History.js");
 const router = require("express").Router();
 const User = require("../models/user.js");
 const jwt = require("jsonwebtoken");
@@ -10,7 +11,10 @@ router.post("/register", async (req, res) => {
       password: req.body.password,
     });
     const user = await newUser.save();
-    res.json(user);
+    if(user){
+      await new History({userId: user._id}).save();
+    }
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json(error);
   }

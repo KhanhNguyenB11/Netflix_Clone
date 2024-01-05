@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/user");
 const verify = require("../verifyToken");
 const listRouter = require('./lists');
+const historyRouter = require('./histories');
 router.put("/:id", verify, async (req, res) => {
   if (req.user.id === req.params.id || req.user.isAdmin) {
     try {
@@ -79,5 +80,6 @@ router.get("/stats", async (req, res) => {
   }
 });
 router.use("/:id/lists",listRouter);
+router.use("/:id/history",historyRouter);
 
 module.exports = router;

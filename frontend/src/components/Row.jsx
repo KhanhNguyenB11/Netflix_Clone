@@ -7,25 +7,37 @@ function Row({ title, fetchURL, rowID, list }) {
   const ignore = useRef(false);
   useEffect(() => {
     if (!ignore.current) {
-      if (list){
+      if (list) {
         axios
-          .post(fetchURL, {ids: list.movies})
+          .get(`${fetchURL}/${list._id}`)
           .then((Response) => {
-            setMovies(Response.data);
+            setMovies(Response.data.movies);
           })
           .catch((error) => {
             console.log(error);
           });
-          console.log(list.movies);
+        console.log(list.movies);
       } else {
-        axios
-          .get(fetchURL)
-          .then((Response) => {
-            setMovies(Response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        if (title === "History") {
+          axios
+            .get(fetchURL)
+            .then((Response) => {
+              setMovies(Response.data.movies);
+              console.log(Response.data.movies);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          axios
+            .get(fetchURL)
+            .then((Response) => {
+              setMovies(Response.data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       }
       return () => {
         ignore.current = true;
@@ -55,10 +67,20 @@ function Row({ title, fetchURL, rowID, list }) {
           id={"slider" + rowID}
           className="overflow-x-scroll w-full h-full whitespace-nowrap scroll-smooth relative scrollbar-hide"
         >
-          {movies.map((movie) => (
-            list ? <Movie movie={movie} key={movie?.id} list={list} displayType="list"/> :
-            <Movie movie={movie} key={movie?.id} />
-          ))}
+          {movies.map((movie) =>
+            list ? (
+              <Movie
+                movie={movie}
+                key={movie?.id}
+                list={list}
+                displayType="list"
+              />
+            ) : title === "History" ? (
+              <Movie movie={movie.movie} key={movie?._id} displayType="History" />
+            ) : (
+              <Movie movie={movie} key={movie?.id} />
+            )
+          )}
         </div>
         <MdChevronRight
           onClick={slideRight}

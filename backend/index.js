@@ -1,3 +1,4 @@
+//Config
 const express = require("express");
 require("dotenv").config();
 const mongoose = require("mongoose");
@@ -10,10 +11,16 @@ const app = express();
 const cors = require("cors");
 app.use(express.json());
 app.use(cors("*"));
+
+
+//routes
 app.use("/auth", auth);
 app.use("/users", users);
 app.use("/movies", movies);
 app.use("/genres", genre);
+
+
+//Run if dbconnected
 mongoose
   .connect(process.env.Mongo_URL)
   .then(() => {

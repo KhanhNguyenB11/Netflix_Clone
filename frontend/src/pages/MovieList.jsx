@@ -2,7 +2,6 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authcontext/AuthContext";
 import { API_URL } from "../Request";
-import ListCard from "../components/ListCard";
 import Modal from "react-modal";
 import Loading from "../components/Loading.jsx";
 import { Link } from "react-router-dom";
@@ -56,7 +55,7 @@ function MovieList() {
   }, []);
   return (
     <>
-      <div className=" bg-black h-100">
+      <div className=" bg-black h-screen">
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -100,7 +99,8 @@ function MovieList() {
             {/* {list
               ? list.map((item) => <ListCard key={item._id} list={item} />)
               : ""} */}
-              {list.map((item) => <Row title={item.name} key={item._id} list={item}  fetchURL={`${API_URL}movies/getlist`} rowID={item._id}/>)}
+              {list.map((item) => <Row title={item.name} key={item._id} list={item}  fetchURL={`${API_URL}users/${user._id}/lists`} rowID={item._id}/>)}
+              <Row title="History" key="History" fetchURL={`${API_URL}users/${user._id}/history`}></Row>
           </div>
         )}
       </div>

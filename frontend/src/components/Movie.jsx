@@ -59,6 +59,20 @@ function Movie({ movie, displayType = "default", list }) {
   //API CALLS
   //remove movie from list
   function handleRemove() {
+    if(displayType === "History"){
+      const movieToRemoved  = {
+        "movie": movie._id,
+      };
+      axios.delete(`${API_URL}users/${user._id}/history/deleteHistory`,movieToRemoved)
+      .then((res) => {
+        console.log(res);
+        setShowComponent(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    }
+    else{
     const newMovieArr = list.movies.filter((item) => item != movie.id);
     axios
       .put(
@@ -77,6 +91,8 @@ function Movie({ movie, displayType = "default", list }) {
       .catch((error) => {
         console.log(error);
       });
+    }
+
   }
   function handleAddToList() {
     selectedlist.movies.push(movie.id);
@@ -185,7 +201,7 @@ function Movie({ movie, displayType = "default", list }) {
           )}
         </Modal>
         <div className="absolute top-0 left-0 w-full h-full hover:bg-black/40 opacity-0 hover:opacity-100">
-          <Link to={`/watch/${movie.title}`} state={movie?.video}>
+          <Link to={`/watch/${movie.title}`} state={movie}>
             <p className="text-white flex justify-center items-center font-bold h-full text-center">
               {movie?.title}
             </p>
