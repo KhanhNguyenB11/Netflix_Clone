@@ -36,7 +36,7 @@ function Movie({ movie, displayType = "default", list }) {
         token: "bearer " + user.accessToken,
       },
     };
-    console.log("Open Modal with movie: " + movie.id);
+    console.log("Open Modal with movie: " + movie._id);
     axios
       .get(`${API_URL}users/${user?._id}/lists`, config)
       .then((res) => {
@@ -73,7 +73,7 @@ function Movie({ movie, displayType = "default", list }) {
       })
     }
     else{
-    const newMovieArr = list.movies.filter((item) => item != movie.id);
+    const newMovieArr = list.movies.filter((item) => item != movie._id);
     axios
       .put(
         `${API_URL}users/${user._id}/lists/${list._id}`,
@@ -95,7 +95,7 @@ function Movie({ movie, displayType = "default", list }) {
 
   }
   function handleAddToList() {
-    selectedlist.movies.push(movie.id);
+    selectedlist.movies.push(movie._id);
     axios
       .put(
         `${API_URL}users/${user._id}/lists/${selectedlist._id}`,
@@ -149,7 +149,7 @@ function Movie({ movie, displayType = "default", list }) {
                   >
                     {mylist
                       ? mylist.map((item) => {
-                          if (!item.movies.includes(movie.id) && item.name !== "History") {
+                          if (!item.movies.includes(movie._id) && item.name !== "History") {
                             return (
                               <option
                                 key={item._id}

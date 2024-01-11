@@ -100,7 +100,7 @@ router.post("/getlist", async (req, res) => {
     if (ids) {
       movie = await Promise.all(
         ids.map(async (id) => {
-          return await Movie.findOne({ id: id });
+          return await Movie.findOne({ _id: id });
         })
       );
       res.status(200).json(movie);
@@ -120,5 +120,19 @@ router.get("/:id", verify, async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+router.get("/search/:title", async (req, res) => {
+  const title = req.params.title;
+  try {
+    const movie = await Movie.find({
+      title: { $regex: title, $options: 'i' },
+    });
+    res.status(200).json(movie);
+  }
+  catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+})
 
 module.exports = router;

@@ -16,16 +16,19 @@ import NewUser from "../../admin/src/pages/newUser/NewUser";
 import ProductList from "../../admin/src/pages/productList/ProductList";
 import Product from "../../admin/src/pages/product/Product";
 import NewProduct from "../../admin/src/pages/newProduct/NewProduct";
+import Search from "./pages/Search.jsx";
 function App() {
   const { user } = useContext(AuthContext);
   return (
     <div>
       <Routes>
         <Route path="/" element={<Home />}></Route>
+        <Route path="/search/:title" element={<Search />}></Route>
         <Route
           path="/admin"
           element={user && user.isAdmin ? <Admin /> : <Navigate to="/" />}
         >
+
           <Route>
             <Route path="" element={<AdminHome />}></Route>
             <Route path="users" element={<UserList />}></Route>
