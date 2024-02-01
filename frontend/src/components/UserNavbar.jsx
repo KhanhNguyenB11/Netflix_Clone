@@ -37,7 +37,7 @@ const UserNavbar = () => {
         <div className="gap-4 flex items-center ">
           <Link to="/" className="link">
             <img
-              src="N_logo.svg"
+              src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
               alt="Netflix_logo"
               className=" w-[200px] h-[100px] z-[100] hover:cursor-pointer"
             />
