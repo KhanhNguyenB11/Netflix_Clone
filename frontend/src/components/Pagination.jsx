@@ -1,13 +1,32 @@
 import React from "react";
-
-function Pagination({pageNum}) {
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+function Pagination({ totalPages, currentPage, onPageChange }) {
+  // Generate an array of page numbers
+  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
   return (
-    <a
-      href="#"
-      className="relative hidden items-center px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-gray-300 font-bold hover:bg-red-700 bg-red-600 focus:z-20 focus:outline-offset-0 md:inline-flex"
-    >
-      {pageNum}
-    </a>
+    <div className="flex justify-center w-full items-center gap-3">
+      <MdChevronLeft
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="bg-red-600 text-white p-2 cursor-pointer hover:bg-red-700 transition-colors duration-300"
+        size={40}
+      ></MdChevronLeft>
+      {pages.map((pageNum) => (
+        <button
+          key={pageNum}
+          onClick={() => onPageChange(pageNum)}
+          disabled={pageNum === currentPage}
+        >
+          {pageNum}
+        </button>
+      ))}
+      <MdChevronRight
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="bg-red-600 text-white p-2 cursor-pointer hover:bg-red-700 transition-colors duration-300"
+        size={40}
+      ></MdChevronRight>
+    </div>
   );
 }
 

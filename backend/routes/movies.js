@@ -14,8 +14,8 @@ router.post("/", verify, async (req, res) => {
     }
   }
 });
-router.get("/",verify,async (req,res)=>{
-  if(req.user.isAdmin){
+router.get("/", verify, async (req, res) => {
+  if (req.user.isAdmin) {
     try {
       const movies = await Movie.find();
       res.status(200).json(movies.reverse());
@@ -23,7 +23,7 @@ router.get("/",verify,async (req,res)=>{
       res.status(500).json(error);
     }
   }
-})
+});
 
 //update movie based on id
 router.put("/:id", verify, async (req, res) => {
@@ -53,7 +53,10 @@ router.get("/popular", async (req, res) => {
 router.get("/newest/", async (req, res) => {
   const page = req.query.page || 1;
   try {
-    const popularMovie = await Movie.find().sort({ release_date: -1 }).skip((page - 1) * 12).limit(12);
+    const popularMovie = await Movie.find()
+      .sort({ release_date: -1 })
+      .skip((page - 1) * 12)
+      .limit(12);
     res.status(200).json(popularMovie);
   } catch (error) {
     res.status(500).json(error);
@@ -69,7 +72,9 @@ router.get("/top_rated", async (req, res) => {
 });
 router.get("/genre/:genre", async (req, res) => {
   try {
-    const genre = await Genre.findOne({ name: new RegExp(req.params.genre, 'i') });
+    const genre = await Genre.findOne({
+      name: new RegExp(req.params.genre, "i"),
+    });
     const genreMovies = await Movie.find({
       genre_ids: { $in: Number(genre.id) },
     }).limit(12);
@@ -111,7 +116,7 @@ router.post("/getlist", async (req, res) => {
     res.status(500).json(error);
   }
 });
-router.get("/:id", verify, async (req, res) => {
+router.get("/find/:id", verify, async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
     res.status(200).json(movie);
@@ -120,7 +125,6 @@ router.get("/:id", verify, async (req, res) => {
     res.status(500).json(error);
   }
 });
-
 router.get("/search/:title", async (req, res) => {
   const title = req.params.title;
   try {
@@ -134,5 +138,33 @@ router.get("/search/:title", async (req, res) => {
     res.status(500).json(error);
   }
 })
+router.get("/search",async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 8;
+  const title = req.query.q; // Fetching the title from query parameters
+  console.log(title);
+  try {
+    let query = {}; // Define an empty query object
+    if (title) {
+      // If title parameter is provided, add it to the query
+      query.title = { $regex: title, $options: "i" };
+    }
+    const count = await Movie.countDocuments(query);
+    const totalPages = Math.ceil(count / limit);
+    const skip = (page - 1) * limit;
 
+    const movies = await Movie.find(query)
+      .sort({ release_date: -1 })
+      .skip(skip)
+      .limit(limit);
+    res.status(200).json({
+      movies,
+      totalPages,
+      currentPage: page,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
 module.exports = router;

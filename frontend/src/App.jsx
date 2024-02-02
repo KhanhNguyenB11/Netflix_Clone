@@ -23,12 +23,11 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/search/:title" element={<Search />}></Route>
+        <Route path="/search" element={<Search />}></Route>
         <Route
           path="/admin"
           element={user && user.isAdmin ? <Admin /> : <Navigate to="/" />}
         >
-
           <Route>
             <Route path="" element={<AdminHome />}></Route>
             <Route path="users" element={<UserList />}></Route>

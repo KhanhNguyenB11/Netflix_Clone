@@ -96,9 +96,6 @@ function MovieList() {
           </div>
         ) : (
           <div className="">
-            {/* {list
-              ? list.map((item) => <ListCard key={item._id} list={item} />)
-              : ""} */}
               {list.map((item) => <Row title={item.name} key={item._id} list={item}  fetchURL={`${API_URL}users/${user._id}/lists`} rowID={item._id}/>)}
               <Row title="History" key="History" fetchURL={`${API_URL}users/${user._id}/history`}></Row>
           </div>

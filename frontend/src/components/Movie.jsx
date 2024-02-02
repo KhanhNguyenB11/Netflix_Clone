@@ -149,7 +149,7 @@ function Movie({ movie, displayType = "default", list }) {
                   >
                     {mylist
                       ? mylist.map((item) => {
-                          if (!item.movies.includes(movie._id) && item.name !== "History") {
+                          if (item.movies && !item.movies.includes(movie._id) && item.name !== "History") {
                             return (
                               <option
                                 key={item._id}

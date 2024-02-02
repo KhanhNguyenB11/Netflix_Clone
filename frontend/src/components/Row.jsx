@@ -67,20 +67,29 @@ function Row({ title, fetchURL, rowID, list }) {
           id={"slider" + rowID}
           className="overflow-x-scroll w-full h-full whitespace-nowrap scroll-smooth relative scrollbar-hide"
         >
-          {movies.map((movie) =>
-            list ? (
-              <Movie
-                movie={movie}
-                key={movie?.id}
-                list={list}
-                displayType="list"
-              />
-            ) : title === "History" ? (
-              <Movie movie={movie.movie} key={movie?._id} displayType="History" />
-            ) : (
-              <Movie movie={movie} key={movie?.id} />
-            )
-          )}
+          {movies
+            ? movies.map((movie) =>
+                list ? (
+                  <Movie
+                    movie={movie}
+                    key={movie?.id}
+                    list={list}
+                    displayType="list"
+                  />
+                ) : title === "History" ? (
+                  <Movie
+                    movie={movie.movie}
+                    key={movie?._id}
+                    displayType="History"
+                  />
+                ) : (
+                  <Movie movie={movie} key={movie?.id} />
+                )
+              )
+            : ""}
+            {!movies && (
+              <div className="text-white">This list is Empty</div>
+            )}
         </div>
         <MdChevronRight
           onClick={slideRight}

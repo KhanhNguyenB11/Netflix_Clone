@@ -1,38 +1,73 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../Request";
 import Movie from "../components/Movie";
-import { Link } from "react-router-dom";
 import UserNavbar from "../components/UserNavbar";
-import Pagination from "../components/Pagination";
-
+import ReactPaginate from "react-paginate";
+import { useLocation } from "react-router-dom";
+import { AuthContext } from "../context/authcontext/AuthContext";
+import Loading from "../components/Loading";
+import { useNavigate } from "react-router-dom";
 function Search() {
-  const { title: searchkey } = useParams();
+  const { user } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const searchParams = new URLSearchParams(location.search);
+  const [title,setTitle] = useState(searchParams.get("q"));
+  const [searchQuery,setSearchQuery] = useState(searchParams.get("q"));
+  const page = searchParams.get("page");
   useEffect(() => {
-    async function searchMovieByTitle(searchkey) {
-      await axios
-        .get(`${API_URL}movies/search/${searchkey}`)
-        .then((res) => {
-          setMovies(res.data);
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    handlePageClick({ selected: page ? parseInt(page) - 1 : 0 });
+    console.log(title)
+  }, [title]);
+  function handleSearchSubmit(e){
+    e.preventDefault();
+    setIsLoading(true)
+    navigate({
+      pathname: "/search",
+      search: `?q=${searchQuery}&page=1`,
+    });
+    setTitle(searchQuery);
+  }
+  async function handlePageClick(event) {
+    try {
+      setIsLoading(true);
+      // Update the URL with the new page query parameter
+      navigate({
+        pathname: "/search",
+        search: `?q=${title}&page=${event.selected + 1}`,
+      });
+
+      // Fetch movies for the new page
+      const response = await axios.get(
+        `${API_URL}movies/search?q=${title}&page=${event.selected + 1}`
+      );
+
+      // Update the state with the new data
+      setMovies(response.data.movies);
+      setCurrentPage(response.data.currentPage);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.log(error);
+      // Handle errors here
+    } finally {
+      setIsLoading(false);
     }
-    searchMovieByTitle(searchkey);
-  }, [searchkey]);
+  }
   return (
-    <div className="bg-black h-full w-full">
+    <div className="bg-black h-screen w-full ">
       <div>
-        <UserNavbar></UserNavbar>
+        <UserNavbar hideSearch={true}></UserNavbar>
       </div>
       <div className="pt-20">
-      {/* Search section */}
-        <div className="w-full flex justify-center m-5">
-          <form className="w-[75%]">
+        {/* Search section */}
+        <div className="w-full flex justify-center">
+          <form className="w-[75%]" onSubmit={e=>handleSearchSubmit(e)}>
             <label
               htmlFor="default-search"
               className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -62,6 +97,9 @@ function Search() {
                 id="default-search"
                 className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Movies name..."
+                value={searchQuery}
+                onChange={(e)=>setSearchQuery(e.target.value)}
+              
               />
               <button
                 type="submit"
@@ -72,22 +110,42 @@ function Search() {
             </div>
           </form>
         </div>
-        {/* Movies list */}
-        <div className="grid grid-cols-4 ">
-          {movies.length > 0
-            ? movies.map((movie) => {
-                return <Movie key={movie._id} movie={movie}></Movie>;
-              })
-            : ""}
-        </div>
-        {/* Pagination */}
-        <div className="flex gap-3 text-white w-full justify-center items-center p-2">
-          <Pagination pageNum={"Previous"}></Pagination>
-          <Pagination pageNum={1}></Pagination>
-          <Pagination pageNum={2}></Pagination>
-          <Pagination pageNum={3}></Pagination>
-          <Pagination pageNum={"Next"}></Pagination>
-        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center p-7">
+
+          <Loading></Loading>
+          </div>
+        ) : (
+          <div>
+            {/* Movies list */}
+            <div className="grid grid-cols-4 h-full">
+              {movies.length > 0
+                ? movies.map((movie) => {
+                    return <Movie key={movie._id} movie={movie}></Movie>;
+                  })
+                : ""}
+            </div>
+            {/* Pagination */}
+            <div className="flex gap-3 text-white w-full justify-center items-center p-2">
+              <ReactPaginate
+                activeClassName="bg-red-600 hover:bg-red-700 transiton-colors duration-300 text-white p-3"
+                previousClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
+                nextClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
+                disabledClassName="bg-gray-400 text-white p-3"
+                pageClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
+                breakLabel="..."
+                nextLabel="Next"
+                forcePage={page ? parseInt(page) - 1 : 0}
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={totalPages}
+                previousLabel="Previous"
+                renderOnZeroPageCount={null}
+                className="flex gap-3 text-white w-full justify-center items-center p-2 cur"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

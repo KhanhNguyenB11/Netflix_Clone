@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/authcontext/AuthContext.jsx";
 import { logout } from "../context/authcontext/AuthAction.js";
 import { CiSearch } from "react-icons/ci";
-const UserNavbar = () => {
+const UserNavbar = ({ hideSearch }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isInputVisible, setIsInputVisible] = useState(false);
   const { dispatch, user } = useContext(AuthContext);
@@ -18,10 +18,11 @@ const UserNavbar = () => {
     setIsInputVisible(!isInputVisible);
   };
 
+  // handle searching
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       // Perform your action here, such as submitting the form or handling the Enter key press
-      navigate(`/search/${e.target.value}`);
+      navigate(`/search?q=${e.target.value}&page=1`);
     }
   };
 
@@ -63,26 +64,29 @@ const UserNavbar = () => {
         {/* right side */}
         <div className="gap-4 flex items-center mr-[50px] mix-blend-overlay">
           {/* Search */}
-          <div className="flex items-center">
-            <div
-              className={`transition-transform transform ${
-                isInputVisible ? "-translate-x-8" : "translate-x-0"
-              }`}
-            >
-              <CiSearch
-                className="h-6 w-6 cursor-pointer"
-                onClick={handleIconClick}
-              />
+          {!hideSearch && (
+            <div className="flex items-center">
+              <div
+                className={`transition-transform transform ${
+                  isInputVisible ? "-translate-x-8" : "translate-x-0"
+                }`}
+              >
+                <CiSearch
+                  className="h-6 w-6 cursor-pointer"
+                  onClick={handleIconClick}
+                />
+              </div>
+              {isInputVisible && (
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="p-2 rounded-md focus:outline-none focus:ring-0 focus:border-gray-900 text-black"
+                  onKeyDown={handleKeyPress}
+                />
+              )}
             </div>
-            {isInputVisible && (
-              <input
-                type="text"
-                placeholder="Search"
-                className="p-2 rounded-md focus:outline-none focus:ring-0 focus:border-gray-900 text-black"
-                onKeyDown={handleKeyPress}
-              />
-            )}
-          </div>
+          )}
+
           {/* User  */}
           <p className=" lg:text-2xl md:text-lg sm:text-md">{user.username}</p>
           <div className="group relative">
