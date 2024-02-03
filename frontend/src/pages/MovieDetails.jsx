@@ -25,11 +25,12 @@ function MovieDetails() {
     <div className="w-full h-full bg-black">
       <UserNavbar></UserNavbar>
       <div className="flex items-center justify-between h-full">
-        <div className="p-20">
+        <div className="py-20 mt-5 w-full flex justify-center">
           <img
-            src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
+            src={`https://image.tmdb.org/t/p/w780/${movie?.poster_path}`}
             alt=""
-            className="w-[500px] h-[529px] mt-5"
+            className=" h-[529px] w-[500px]"
+            
           />
         </div>
         <div className="p-20">
