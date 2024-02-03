@@ -140,21 +140,25 @@ router.get("/search/:title", async (req, res) => {
 })
 router.get("/search",async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = 8;
+  const limit = 12;
   const title = req.query.q; // Fetching the title from query parameters
-  console.log(title);
+  const sortBy = req.query.sortBy || "release_date";
+  const selectedGenre = Number(req.query.genre) || "";
   try {
     let query = {}; // Define an empty query object
     if (title) {
       // If title parameter is provided, add it to the query
       query.title = { $regex: title, $options: "i" };
     }
+    if(selectedGenre){
+      query.genre_ids = { $in: [selectedGenre] };
+    }
     const count = await Movie.countDocuments(query);
     const totalPages = Math.ceil(count / limit);
     const skip = (page - 1) * limit;
 
     const movies = await Movie.find(query)
-      .sort({ release_date: -1 })
+      .sort({ [sortBy]: -1 })
       .skip(skip)
       .limit(limit);
     res.status(200).json({

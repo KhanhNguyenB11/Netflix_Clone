@@ -201,7 +201,7 @@ function Movie({ movie, displayType = "default", list }) {
           )}
         </Modal>
         <div className="absolute top-0 left-0 w-full h-full hover:bg-black/40 opacity-0 hover:opacity-100">
-          <Link to={`/watch/${movie.title}`} state={movie}>
+          <Link to={`/moviedetails/${movie.title}`} state={movie}>
             <p className="text-white flex justify-center items-center font-bold h-full text-center">
               {movie?.title}
             </p>

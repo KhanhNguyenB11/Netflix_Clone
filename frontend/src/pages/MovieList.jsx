@@ -7,13 +7,14 @@ import Loading from "../components/Loading.jsx";
 import { Link } from "react-router-dom";
 import CreateList from "../components/CreateList.jsx";
 import Row from "../components/Row.jsx";
+import Footer from "../components/Footer";
 Modal.setAppElement("#root");
 function MovieList() {
   const { user } = useContext(AuthContext);
   const [list, setList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  
+
   const customStyles = {
     content: {
       top: "50%",
@@ -46,7 +47,7 @@ function MovieList() {
       .then((res) => {
         setList(res.data);
         setLoading(false);
-        console.log(res.data)
+        console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -96,10 +97,23 @@ function MovieList() {
           </div>
         ) : (
           <div className="">
-              {list.map((item) => <Row title={item.name} key={item._id} list={item}  fetchURL={`${API_URL}users/${user._id}/lists`} rowID={item._id}/>)}
-              <Row title="History" key="History" fetchURL={`${API_URL}users/${user._id}/history`}></Row>
+            <Row
+              title="History"
+              key="History"
+              fetchURL={`${API_URL}users/${user._id}/history`}
+            ></Row>
+            {list.map((item) => (
+              <Row
+                title={item.name}
+                key={item._id}
+                list={item}
+                fetchURL={`${API_URL}users/${user._id}/lists`}
+                rowID={item._id}
+              />
+            ))}
           </div>
         )}
+        <Footer />
       </div>
     </>
   );

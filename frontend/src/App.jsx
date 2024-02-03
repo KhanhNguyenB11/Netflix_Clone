@@ -17,6 +17,7 @@ import ProductList from "../../admin/src/pages/productList/ProductList";
 import Product from "../../admin/src/pages/product/Product";
 import NewProduct from "../../admin/src/pages/newProduct/NewProduct";
 import Search from "./pages/Search.jsx";
+import MovieDetails from "./pages/MovieDetails.jsx";
 function App() {
   const { user } = useContext(AuthContext);
   return (
@@ -43,6 +44,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="/moviedetails/:id" element={<MovieDetails />}></Route>
         <Route path="/watch/:id" element={<Watch />}></Route>
         <Route
           path={user && `/${user.username}/list`}

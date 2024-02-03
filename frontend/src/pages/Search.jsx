@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../Request";
@@ -10,8 +10,9 @@ import { AuthContext } from "../context/authcontext/AuthContext";
 import Loading from "../components/Loading";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import Footer from "../components/Footer";
+import SortAndGenre from "../components/SortAndGenre";
 function Search() {
-  const { user } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,17 +22,18 @@ function Search() {
   const searchParams = new URLSearchParams(location.search);
   const [title, setTitle] = useState(searchParams.get("q"));
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q"));
+  const sortRef = useRef("");
+  const genreRef = useRef("");
   const page = searchParams.get("page");
-  useEffect(() => {
-    handlePageClick({ selected: page ? parseInt(page) - 1 : 0 });
-    console.log(title);
-  }, [title]);
+
   function handleSearchSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
     navigate({
       pathname: "/search",
-      search: `?q=${searchQuery}&page=1`,
+      search: `?q=${searchQuery}&page=1&genre=${
+        genreRef.current.value || ""
+      }&sortBy=${sortRef.current.value || ""}`,
     });
     setTitle(searchQuery);
   }
@@ -41,14 +43,20 @@ function Search() {
       // Update the URL with the new page query parameter
       navigate({
         pathname: "/search",
-        search: `?q=${title}&page=${event.selected + 1}`,
+        search: `?q=${title}&page=${event.selected + 1}&genre=${
+          genreRef.current.value || ""
+        }&sortBy=${sortRef.current.value || ""}`,
       });
 
       // Fetch movies for the new page
-      const response = await axios.get(
-        `${API_URL}movies/search?q=${title}&page=${event.selected + 1}`
-      );
-
+      const response = await axios.get(`${API_URL}movies/search`, {
+        params: {
+          q: title,
+          page: event.selected + 1,
+          genre: genreRef.current.value || null,
+          sortBy: sortRef.current.value || null,
+        },
+      });
       // Update the state with the new data
       setMovies(response.data.movies);
       setCurrentPage(response.data.currentPage);
@@ -60,8 +68,27 @@ function Search() {
       setIsLoading(false);
     }
   }
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sortByParam = params.get('sortBy') || '';
+    const genreParam = params.get('genre') || '';
+
+    if (sortRef.current) {
+      sortRef.current.value = sortByParam;
+    }
+
+    if (genreRef.current) {
+      genreRef.current.value = genreParam;
+    }
+  }, []);
+
+  useEffect(() => {
+    handlePageClick({ selected: page ? parseInt(page) - 1 : 0 });
+  }, [page, title,genreRef.current.value,sortRef.current.value]);
+
   return (
-    <div className="bg-black h-screen w-full ">
+    <div className="bg-black h-screen w-full sm:resize-none">
       <div>
         <UserNavbar hideSearch={true}></UserNavbar>
       </div>
@@ -111,81 +138,53 @@ function Search() {
           </form>
         </div>
         {/* Genre and Sorting */}
-        <div className="w-full flex justify-center">
-          <div className="w-[75%] flex justify-start gap-5 my-5 ">
-            <select name="" id="" className="p-2 rounded-sm">
-              <option value="0">Sort</option>
-              <option value="1">Popularity</option>
-              <option value="2">Release Date </option>
-              <option value="3">Rating</option>
-            </select>
-            <select id="movieGenres" className="p-2">
-              <option value="0">Genres</option>
-              <option value="28">Action</option>
-              <option value="12">Adventure</option>
-              <option value="16">Animation</option>
-              <option value="35">Comedy</option>
-              <option value="80">Crime</option>
-              <option value="99">Documentary</option>
-              <option value="18">Drama</option>
-              <option value="10751">Family</option>
-              <option value="14">Fantasy</option>
-              <option value="36">History</option>
-              <option value="27">Horror</option>
-              <option value="10402">Music</option>
-              <option value="9648">Mystery</option>
-              <option value="10749">Romance</option>
-              <option value="878">Science Fiction</option>
-              <option value="10770">TV Movie</option>
-              <option value="53">Thriller</option>
-              <option value="10752">War</option>
-              <option value="37">Western</option>
-            </select>
-          </div>
-        </div>
+        <SortAndGenre genreRef={genreRef} sortRef={sortRef}></SortAndGenre>
         {isLoading ? (
-          <div className="flex justify-center items-center p-7">
+          <div className="flex justify-center items-center h-[360px]">
             <Loading></Loading>
           </div>
         ) : (
           <div>
             {/* Movies list */}
-            
             <div>
-              <h1 className="text-white text-2xl font-bold">Search Result:</h1>
-              <div className="grid grid-cols-4 h-full">
-                {movies.length > 0
-                  ? movies.map((movie) => {
-                      return <Movie key={movie._id} movie={movie}></Movie>;
-                    })
-                  : (
-                    <div className="flex w-screen justify-center">
-                      <h1 className="text-2xl font-bold text-white">Can&apos;t find any movies</h1>
-                    </div>
-                  )}
+              <h1 className="text-white text-2xl font-bold p-3">Search Result:</h1>
+              <div className="grid lg:grid-cols-6 h-full md:grid-cols-4 grid-cols-3">
+                {movies.length > 0 ? (
+                  movies.map((movie) => {
+                    return <Movie key={movie._id} movie={movie}></Movie>;
+                  })
+                ) : (
+                  <div className="flex w-screen justify-center">
+                    <h1 className="text-2xl font-bold text-white">
+                      Can&apos;t find any movies
+                    </h1>
+                  </div>
+                )}
               </div>
-            </div>
-            {/* Pagination */}
-            <div className="flex gap-3 text-white w-full justify-center items-center p-2">
-              <ReactPaginate
-                activeClassName="bg-red-600 hover:bg-red-700 transiton-colors duration-300 text-white p-3"
-                previousClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
-                nextClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
-                disabledClassName="bg-gray-400 text-white p-3"
-                pageClassName="border text-xl text-white border-white py-2 px-4 hover:bg-white hover:text-black transition-all duration-300"
-                breakLabel="..."
-                nextLabel="Next"
-                forcePage={page ? parseInt(page) - 1 : 0}
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
-                pageCount={totalPages}
-                previousLabel="Previous"
-                renderOnZeroPageCount={null}
-                className="flex gap-3 text-white w-full justify-center items-center p-2 cur"
-              />
             </div>
           </div>
         )}
+        {/* Pagination */}
+        <div className="flex gap-3 text-white w-full justify-center items-center p-2">
+          <ReactPaginate
+            activeClassName="bg-red-600 hover:bg-red-700 transiton-colors duration-300 text-white p-3"
+            previousClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
+            nextClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
+            disabledClassName="bg-gray-400 text-white p-3"
+            pageClassName="border text-xl text-white border-white py-2 px-4 hover:bg-white hover:text-black transition-all duration-300"
+            breakLabel="..."
+            nextLabel="Next"
+            forcePage={page ? parseInt(page) - 1 : 0}
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={totalPages}
+            previousLabel="Previous"
+            renderOnZeroPageCount={null}
+            className="flex gap-3 text-white w-full justify-center items-center p-2 cur"
+          />
+        </div>
+
+        <Footer></Footer>
       </div>
     </div>
   );
