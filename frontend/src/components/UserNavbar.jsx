@@ -15,7 +15,11 @@ const UserNavbar = ({ hideSearch }) => {
   };
 
   const handleIconClick = () => {
-    setIsInputVisible(!isInputVisible);
+    if (window.innerWidth < 600) {
+      navigate("/search");
+    } else {
+      setIsInputVisible(!isInputVisible);
+    }
   };
 
   // handle searching
@@ -35,6 +39,7 @@ const UserNavbar = ({ hideSearch }) => {
       } w-full text-white text-sm fixed z-50 mix-blend-normal`}
     >
       <div className=" px-4 mx-auto flex items-center justify-between h-16 absolute w-[100vw]">
+        {/* left side */}
         <div className="md:gap-4 flex items-center gap-2 ">
           <Link to="/" className="link">
             <img
@@ -54,9 +59,9 @@ const UserNavbar = ({ hideSearch }) => {
             </span>
           </Link>
           <Link className="" to="">
-          <span className="lg:text-2xl md:text-lg sm:text-md md:block hidden">
-            New and Popular
-          </span>
+            <span className="lg:text-2xl md:text-lg sm:text-md md:block hidden">
+              New and Popular
+            </span>
           </Link>
           <Link to={`/${user.username}/list`}>
             <span className="lg:text-2xl text-lg md:text-xl">My List</span>
@@ -108,7 +113,9 @@ const UserNavbar = ({ hideSearch }) => {
             </svg>
 
             <div className=" flex-col opacity-0 absolute flex bg-gray-700 rounded-md group-hover:opacity-100 transition-all duration-300">
-              <span className="p-2 cursor-pointer hover:bg-gray-800 transition-colors duration-300">Settings</span>
+              <span className="p-2 cursor-pointer hover:bg-gray-800 transition-colors duration-300">
+                Settings
+              </span>
               <span
                 className="p-2 cursor-pointer hover:bg-gray-800 transition-colors duration-300 "
                 onClick={() => {
@@ -119,13 +126,15 @@ const UserNavbar = ({ hideSearch }) => {
                 Logout
               </span>
               {user.isAdmin ? (
-                <Link to="/admin" className="p-2 cursor-pointer hover:bg-gray-800 transition-colors duration-300 rounded-md">
-                  <span >Admin</span>
+                <Link
+                  to="/admin"
+                  className="p-2 cursor-pointer hover:bg-gray-800 transition-colors duration-300 rounded-md"
+                >
+                  <span>Admin</span>
                 </Link>
               ) : (
                 ""
               )}
-              
             </div>
           </div>
         </div>

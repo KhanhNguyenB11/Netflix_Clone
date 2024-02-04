@@ -1,12 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../Request";
 import Movie from "../components/Movie";
 import UserNavbar from "../components/UserNavbar";
 import ReactPaginate from "react-paginate";
 import { useLocation } from "react-router-dom";
-import { AuthContext } from "../context/authcontext/AuthContext";
 import Loading from "../components/Loading";
 import { useNavigate } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
@@ -15,7 +13,6 @@ import SortAndGenre from "../components/SortAndGenre";
 function Search() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,7 +56,7 @@ function Search() {
       });
       // Update the state with the new data
       setMovies(response.data.movies);
-      setCurrentPage(response.data.currentPage);
+      
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.log(error);
