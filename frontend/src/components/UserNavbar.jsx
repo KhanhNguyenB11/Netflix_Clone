@@ -35,29 +35,31 @@ const UserNavbar = ({ hideSearch }) => {
       } w-full text-white text-sm fixed z-50 mix-blend-normal`}
     >
       <div className=" px-4 mx-auto flex items-center justify-between h-16 absolute w-[100vw]">
-        <div className="gap-4 flex items-center ">
+        <div className="md:gap-4 flex items-center gap-2 ">
           <Link to="/" className="link">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
               alt="Netflix_logo"
-              className=" w-[200px] h-[100px] z-[100] hover:cursor-pointer"
+              className=" w-[90px] h-[100px] z-[100] hover:cursor-pointer lg:w-[200px] md:h-[100px] mt-4"
             />
           </Link>
-          <Link to="/series" className="link">
+          <Link to="" className="link">
             <span className="navbarmainLinks hidden md:block lg:text-2xl md:text-lg sm:text-md">
               Series
             </span>
           </Link>
-          <Link to="/movies" className="link">
+          <Link to="" className="link">
             <span className="navbarmainLinks hidden md:block lg:text-2xl md:text-lg sm:text-md">
               Movies
             </span>
           </Link>
-          <span className="lg:text-2xl md:text-lg sm:text-md">
+          <Link className="" to="">
+          <span className="lg:text-2xl md:text-lg sm:text-md md:block hidden">
             New and Popular
           </span>
+          </Link>
           <Link to={`/${user.username}/list`}>
-            <span className="lg:text-2xl md:text-lg sm:text-md">My List</span>
+            <span className="lg:text-2xl text-lg md:text-xl">My List</span>
           </Link>
         </div>
 
@@ -88,7 +90,7 @@ const UserNavbar = ({ hideSearch }) => {
           )}
 
           {/* User  */}
-          <p className=" lg:text-2xl md:text-lg sm:text-md">{user.username}</p>
+          <p className=" lg:text-2xl md:text-xl text-lg">{user.username}</p>
           <div className="group relative">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -106,9 +108,9 @@ const UserNavbar = ({ hideSearch }) => {
             </svg>
 
             <div className=" flex-col opacity-0 absolute flex bg-gray-700 rounded-md group-hover:opacity-100 transition-all duration-300">
-              <span className="p-2 cursor-pointer">Settings</span>
+              <span className="p-2 cursor-pointer hover:bg-gray-800 transition-colors duration-300">Settings</span>
               <span
-                className="p-2 cursor-pointer"
+                className="p-2 cursor-pointer hover:bg-gray-800 transition-colors duration-300 "
                 onClick={() => {
                   dispatch(logout());
                   window.location.href = "/";
@@ -117,12 +119,13 @@ const UserNavbar = ({ hideSearch }) => {
                 Logout
               </span>
               {user.isAdmin ? (
-                <Link to="/admin">
-                  <span className="p-2 cursor-pointer">Admin</span>
+                <Link to="/admin" className="p-2 cursor-pointer hover:bg-gray-800 transition-colors duration-300 rounded-md">
+                  <span >Admin</span>
                 </Link>
               ) : (
                 ""
               )}
+              
             </div>
           </div>
         </div>

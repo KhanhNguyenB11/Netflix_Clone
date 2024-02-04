@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/authcontext/AuthContext";
 import { login } from "../context/authcontext/apiCalls";
+import Footer from "../components/Footer";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,7 +66,9 @@ function Login() {
             </div>
           </div>
         </div>
+        
       </div>
+      
     </>
   );
 }

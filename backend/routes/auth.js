@@ -39,5 +39,15 @@ router.post("/login", async (req, res) => {
     res.status(500).json(error);
   }
 });
+router.get("/emailused", async (req, res) => {
+  const email = req.query.email;
+  const user = await User.findOne({ email });
+  if(!user){
+    res.status(200).json({used:false});
+  }
+  else{
+    res.status(200).json({used:true});
+  }
+})
 
 module.exports = router;

@@ -33,6 +33,9 @@ function Watch() {
         movie: movie._id,
         playbackProgress: 0,
       };
+      if(!user){
+        window.location.href = "/login";
+      }
       axios
         .patch(
           `${API_URL}users/${user._id}/history/updateHistory`,

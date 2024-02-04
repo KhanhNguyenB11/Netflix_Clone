@@ -1,6 +1,6 @@
 import ReactLoading from "react-loading";
-function Loading() {
-  return <ReactLoading type="spin" color="#fff" height={400} width={200} />;
+function Loading({small}) {
+  return <ReactLoading type="spin" color="#fff" height={small ? 40 : 400} width={small ? 40 : 200 } />;
 }
 
 export default Loading;

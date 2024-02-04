@@ -40,11 +40,11 @@ function Main() {
           />
           <div className="absolute w-full top-[20%] p-4 md:p-8">
             <h1 className="text-4xl py-3 font-bold ">{feature_movie?.title}</h1>
-            <button className="border bg-gray-300 text-black border-gray-300 py-2 px-5 hover:text-white hover:bg-black transition-all duration-300 font-bold">
-              <Link to={`/watch/${feature_movie.title}`} state={feature_movie}>
+            <Link to={`/watch/${feature_movie.title}`} state={feature_movie}>
+              <button className="border bg-gray-300 text-black border-gray-300 py-2 px-5 hover:text-white hover:bg-black transition-all duration-300 font-bold">
                 Play
-              </Link>
-            </button>
+              </button>
+            </Link>
             <button className="border text-white border-white py-2 px-5 ml-5 hover:bg-white hover:text-black transition-all duration-300 font-bold">
               Watch Later
             </button>

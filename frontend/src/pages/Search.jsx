@@ -146,7 +146,7 @@ function Search() {
         ) : (
           <div>
             {/* Movies list */}
-            <div>
+            <div className="pr-6 md:p-0 md:ml-6">
               <h1 className="text-white text-2xl font-bold p-3">Search Result:</h1>
               <div className="grid lg:grid-cols-6 h-full md:grid-cols-4 grid-cols-3">
                 {movies.length > 0 ? (
@@ -165,13 +165,13 @@ function Search() {
           </div>
         )}
         {/* Pagination */}
-        <div className="flex gap-3 text-white w-full justify-center items-center p-2">
+        <div className="flex md:gap-3 gap-1 text-white w-full justify-center items-center ">
           <ReactPaginate
             activeClassName="bg-red-600 hover:bg-red-700 transiton-colors duration-300 text-white p-3"
-            previousClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
-            nextClassName="border text-white border-white py-2 px-5 hover:bg-white hover:text-black transition-all duration-300"
-            disabledClassName="bg-gray-400 text-white p-3"
-            pageClassName="border text-xl text-white border-white py-2 px-4 hover:bg-white hover:text-black transition-all duration-300"
+            previousClassName="border text-white border-white py-2 md:px-5 hover:bg-white hover:text-black transition-all duration-300 md:text-xl text-md px-2"
+            nextClassName="border text-white border-white py-2 md:px-5 hover:bg-white hover:text-black transition-all duration-300 md:text-xl text-md px-2"
+            disabledClassName="bg-gray-400 text-white md:text-lg text-md px-2"
+            pageClassName="border md:text-xl text-md text-white border-white py-2 px-2 md:px-4 hover:bg-white hover:text-black transition-all duration-300"
             breakLabel="..."
             nextLabel="Next"
             forcePage={page ? parseInt(page) - 1 : 0}

@@ -42,6 +42,7 @@ router.get("/find/:id", verify, async (req, res) => {
     res.status(500).json(error);
   }
 });
+
 router.get("/", verify, async (req, res) => {
   const query = req.query.new;
   if (req.user.isAdmin) {

@@ -1,12 +1,13 @@
 import { FaRegHeart } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import { API_URL } from "../Request";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authcontext/AuthContext";
 import { BsPlus } from "react-icons/bs";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 Modal.setAppElement("#root");
 const customStyles = {
   content: {
@@ -28,6 +29,7 @@ function Movie({ movie, displayType = "default", list }) {
   const [showComponent, setShowComponent] = useState(true);
   const [mylist, setMyList] = useState([]);
   const [selectedlist, setSelectedList] = useState("");
+  const navigate = useNavigate();
 
   //Modal methods:
   const openModal = () => {
@@ -201,7 +203,7 @@ function Movie({ movie, displayType = "default", list }) {
           )}
         </Modal>
         <div className="absolute top-0 left-0 w-full h-full hover:bg-black/40 opacity-0 hover:opacity-100">
-          <Link to={`/moviedetails/${movie.title}`} state={movie}>
+          <Link to={user ? `/moviedetails/${movie.title}` : "/login"} state={movie}>
             <p className="text-white flex justify-center items-center font-bold h-full text-center">
               {movie?.title}
             </p>

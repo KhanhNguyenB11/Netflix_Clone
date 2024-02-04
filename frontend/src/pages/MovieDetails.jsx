@@ -35,7 +35,7 @@ function MovieDetails() {
         </div>
         <div className="p-20">
           <h1 className="text-white text-5xl font-bold">{movie.title}</h1>
-          <p className="text-white text-gray-600">{movie.release_date}</p>
+          <p className="text-gray-600 ">{movie.release_date}</p>
           <h2 className="text-white text-xl font-bold">OVERVIEW</h2>
           <div className="bg-gray-700 h-[0.1rem]"></div>
           <div className="text-white">
